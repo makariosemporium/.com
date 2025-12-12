@@ -16,14 +16,13 @@
   <header class="navbar">
     <div class="logo">Makarios Emporium</div>
     <nav>
-     <ul class="nav-menu">
-  <li><a href="index.html">Home</a></li>
-  <li><a href="shop/index.html">Shop</a></li>
-  <li><a href="#">Collections</a></li>
-  <li><a href="auth/login.html">Login</a></li>
-  <li><a href="cart/index.html"><button class="cart-btn">Cart (0)</button></a></li>
-</ul>
-
+      <ul class="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="shop/index.html">Shop</a></li>
+        <li><a href="#">Collections</a></li>
+        <li><a href="auth/login.html">Login</a></li>
+        <li><a href="cart/index.html"><button class="cart-btn">Cart (0)</button></a></li>
+      </ul>
     </nav>
   </header>
 
@@ -34,35 +33,55 @@
       <h1>Where Fashion Meets Royalty</h1>
       <p>Premium clothing designed for bold, confident, and classy individuals.</p>
       <a href="shop/index.html" class="hero-btn">Shop New Arrivals</a>
-
     </div>
   </section>
 
-  <!-- FEATURED PRODUCTS PLACEHOLDER -->
+  <!-- FEATURED PRODUCTS -->
   <section class="section-title">
     <h2>Featured Products</h2>
   </section>
 
   <section class="products-grid">
+    <!-- PRODUCT 1 -->
     <div class="product-card">
       <img src="https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg" alt="Fashion 1">
       <h3>Classic Men's Jacket</h3>
       <p class="price">₵399</p>
-      <button class="buy-btn">Add to Cart</button>
+      <button class="buy-btn"
+        data-id="1"
+        data-name="Classic Men's Jacket"
+        data-price="399"
+        data-img="https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg">
+        Add to Cart
+      </button>
     </div>
 
+    <!-- PRODUCT 2 -->
     <div class="product-card">
       <img src="https://images.pexels.com/photos/7679727/pexels-photo-7679727.jpeg" alt="Fashion 2">
       <h3>Elegant Women's Dress</h3>
       <p class="price">₵520</p>
-      <button class="buy-btn">Add to Cart</button>
+      <button class="buy-btn"
+        data-id="2"
+        data-name="Elegant Women's Dress"
+        data-price="520"
+        data-img="https://images.pexels.com/photos/7679727/pexels-photo-7679727.jpeg">
+        Add to Cart
+      </button>
     </div>
 
+    <!-- PRODUCT 3 -->
     <div class="product-card">
       <img src="https://images.pexels.com/photos/6311652/pexels-photo-6311652.jpeg" alt="Fashion 3">
       <h3>Premium Unisex Hoodie</h3>
       <p class="price">₵280</p>
-      <button class="buy-btn">Add to Cart</button>
+      <button class="buy-btn"
+        data-id="3"
+        data-name="Premium Unisex Hoodie"
+        data-price="280"
+        data-img="https://images.pexels.com/photos/6311652/pexels-photo-6311652.jpeg">
+        Add to Cart
+      </button>
     </div>
   </section>
 
