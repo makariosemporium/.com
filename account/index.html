@@ -1,45 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard — Makarios Emporium</title>
-<link rel="stylesheet" href="dashboard.css">
-<script type="module" src="../firebase.js"></script>
-<script type="module" src="account.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard — Makarios Emporium</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <script type="module" src="../firebase.js"></script>
+  <script type="module" src="dashboard.js"></script>
 </head>
 <body>
+
 <header class="navbar">
   <div class="logo">Makarios Emporium</div>
   <nav>
     <ul class="nav-menu">
-      <li><a href="../index.html">Home</a></li>
-      <li><a href="../shop/index.html">Shop</a></li>
       <li><a href="index.html" class="active">Dashboard</a></li>
-      <li><a href="../cart/index.html">Cart</a></li>
+      <li><a href="orders.html">My Orders</a></li>
+      <li><a href="settings.html">Profile</a></li>
       <li><button id="logoutBtn">Logout</button></li>
     </ul>
   </nav>
 </header>
 
 <section class="dashboard-summary">
-  <h2>Welcome, <span id="userName"></span>!</h2>
+  <h2>Welcome, <span id="userName">User</span>!</h2>
   <div class="summary-cards">
     <div class="card">
       <h3>Total Orders</h3>
       <p id="totalOrders">0</p>
     </div>
     <div class="card">
-      <h3>Pending Orders</h3>
-      <p id="pendingOrders">0</p>
-    </div>
-    <div class="card">
-      <h3>Completed Orders</h3>
-      <p id="completedOrders">0</p>
+      <h3>Amount Spent</h3>
+      <p id="totalSpent">₵0</p>
     </div>
   </div>
-  <a href="orders.html" class="btn">View Order History</a>
-  <a href="settings.html" class="btn">Edit Profile</a>
 </section>
 
 </body>
