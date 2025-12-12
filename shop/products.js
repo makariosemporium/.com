@@ -1,24 +1,41 @@
-// PRODUCT DATABASE (You can add as many as you want)
-const PRODUCTS = [
-  {
-    id: 1,
-    name: "Classic Men's Jacket",
-    price: 399,
-    image: "https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg",
-    description: "A premium men’s jacket designed for style, comfort, and durability."
-  },
-  {
-    id: 2,
-    name: "Elegant Women's Dress",
-    price: 520,
-    image: "https://images.pexels.com/photos/7679727/pexels-photo-7679727.jpeg",
-    description: "Elegant and classy dress for modern women."
-  },
-  {
-    id: 3,
-    name: "Premium Unisex Hoodie",
-    price: 280,
-    image: "https://images.pexels.com/photos/6311652/pexels-photo-6311652.jpeg",
-    description: "Comfortable hoodie suitable for all genders."
+// product.js
+import { getAllProducts } from "./products.js";
+
+// Get product ID from URL
+const urlParams = new URLSearchParams(window.location.search);
+const productId = urlParams.get("id");
+
+const productDetail = document.getElementById("productDetail");
+
+async function loadProduct() {
+  const products = await getAllProducts();
+  const p = products.find(prod => prod.id === productId);
+
+  if (!p) {
+    productDetail.innerHTML = "<p>Product not found</p>";
+    return;
   }
-];
+
+  productDetail.innerHTML = `
+    <img src="${p.imageUrl}" alt="${p.name}" class="product-image">
+    <div class="product-info">
+      <h2>${p.name}</h2>
+      <p class="price">₵${p.price}</p>
+      <p>${p.description || ""}</p>
+      <button id="addToCartBtn">Add to Cart</button>
+    </div>
+  `;
+
+  document.getElementById("addToCartBtn").addEventListener("click", () => {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existing = cart.find(item => item.id === productId);
+
+    if (existing) existing.qty++;
+    else cart.push({ id: productId, name: p.name, price: p.price, qty: 1 });
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("Added to cart!");
+  });
+}
+
+loadProduct();
