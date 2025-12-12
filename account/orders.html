@@ -1,39 +1,41 @@
-<!-- orders.html -->
-<table>
-  <thead>
-    <tr>
-      <th>Order ID</th>
-      <th>Date</th>
-      <th>Status</th>
-      <th>Amount</th>
-    </tr>
-  </thead>
-  <tbody id="ordersTable"></tbody>
-</table>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orders — Makarios Emporium</title>
+<link rel="stylesheet" href="dashboard.css">
+<script type="module" src="../firebase.js"></script>
+<script type="module" src="account.js"></script>
+</head>
+<body>
+<header class="navbar">
+  <div class="logo">Makarios Emporium</div>
+  <nav>
+    <ul class="nav-menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../shop/index.html">Shop</a></li>
+      <li><a href="index.html">Dashboard</a></li>
+      <li><a href="../cart/index.html">Cart</a></li>
+      <li><button id="logoutBtn">Logout</button></li>
+    </ul>
+  </nav>
+</header>
 
-<script>
-auth.onAuthStateChanged(user => {
-  if (!user) {
-    window.location.href = "../auth/login.html";
-    return;
-  }
-
-  const ordersRef = db.collection("orders").where("userId", "==", user.uid);
-
-  ordersRef.get().then(snapshot => {
-    const table = document.getElementById("ordersTable");
-    table.innerHTML = "";
-    snapshot.forEach(doc => {
-      const order = doc.data();
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${doc.id}</td>
-        <td>${order.date.toDate().toLocaleDateString()}</td>
-        <td>${order.status}</td>
-        <td>₵${order.total}</td>
-      `;
-      table.appendChild(tr);
-    });
-  });
-});
-</script>
+<section class="orders-section">
+  <h2>Your Orders</h2>
+  <table id="ordersTable">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Products</th>
+        <th>Total</th>
+        <th>Status</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</section>
+</body>
+</html>
