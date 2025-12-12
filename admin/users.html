@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Users</title>
+  <link rel="stylesheet" href="users.css" />
+</head>
+
+<body>
+  <div class="container">
+    <aside class="sidebar">
+      <h2>Admin Panel</h2>
+      <ul>
+        <li><a href="index.html">Dashboard</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="orders.html">Orders</a></li>
+        <li><a class="active" href="users.html">Users</a></li>
+        <li><a href="#">Settings</a></li>
+      </ul>
+    </aside>
+
+    <main class="content">
+      <h1>Users Management</h1>
+
+      <table>
+        <thead>
+          <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+
+        <tbody id="usersTable"></tbody>
+      </table>
+    </main>
+  </div>
+
+  <script src="users.js"></script>
+</body>
+</html>
