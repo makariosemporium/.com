@@ -1,40 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Makarios Emporium</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Makarios Emporium — Luxury Clothing</title>
+  <link rel="stylesheet" href="style.css">
 
-  <!-- Google Fonts -->
+  <!-- GOOGLE FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
 
-  <!-- HEADER -->
-  <header class="header">
-    <h1 class="logo">Makarios Emporium</h1>
+<body>
+  <!-- TOP NAV -->
+  <header class="navbar">
+    <div class="logo">Makarios Emporium</div>
     <nav>
-      <ul class="nav-links">
+      <ul class="nav-menu">
         <li><a href="#">Home</a></li>
         <li><a href="#">Shop</a></li>
+        <li><a href="#">Collections</a></li>
         <li><a href="#">Login</a></li>
+        <li><button class="cart-btn">Cart (0)</button></li>
       </ul>
     </nav>
   </header>
 
   <!-- HERO SECTION -->
   <section class="hero">
-    <h2>Luxury Clothing for the Bold & Blessed</h2>
-    <p>Shop premium outfits curated with excellence for modern kings and queens.</p>
-    <a href="#" class="btn">Start Shopping</a>
+    <div class="hero-overlay"></div>
+    <div class="hero-text">
+      <h1>Where Fashion Meets Royalty</h1>
+      <p>Premium clothing designed for bold, confident, and classy individuals.</p>
+      <a href="#" class="hero-btn">Shop New Arrivals</a>
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCTS PLACEHOLDER -->
+  <section class="section-title">
+    <h2>Featured Products</h2>
+  </section>
+
+  <section class="products-grid">
+    <div class="product-card">
+      <img src="https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg" alt="Fashion 1">
+      <h3>Classic Men's Jacket</h3>
+      <p class="price">₵399</p>
+      <button class="buy-btn">Add to Cart</button>
+    </div>
+
+    <div class="product-card">
+      <img src="https://images.pexels.com/photos/7679727/pexels-photo-7679727.jpeg" alt="Fashion 2">
+      <h3>Elegant Women's Dress</h3>
+      <p class="price">₵520</p>
+      <button class="buy-btn">Add to Cart</button>
+    </div>
+
+    <div class="product-card">
+      <img src="https://images.pexels.com/photos/6311652/pexels-photo-6311652.jpeg" alt="Fashion 3">
+      <h3>Premium Unisex Hoodie</h3>
+      <p class="price">₵280</p>
+      <button class="buy-btn">Add to Cart</button>
+    </div>
   </section>
 
   <!-- FOOTER -->
-  <footer>
-    <p>&copy; 2025 Makarios Emporium — All Rights Reserved</p>
+  <footer class="footer">
+    <p>© 2025 Makarios Emporium — Luxury Clothing Brand</p>
   </footer>
 
   <script src="script.js"></script>
