@@ -1,5 +1,4 @@
-// auth.js
-import { auth, db, createUserWithEmailAndPassword, signInWithEmailAndPassword, doc, setDoc } from "../firebase.js";
+import { auth, db, createUserWithEmailAndPassword, signInWithEmailAndPassword, setDoc, doc } from "../firebase.js";
 
 // Login
 const loginForm = document.querySelector("#loginForm");
@@ -10,9 +9,7 @@ if (loginForm) {
     const password = loginForm.password.value;
 
     signInWithEmailAndPassword(auth, email, password)
-      .then(userCredential => {
-        window.location.href = "../account/index.html";
-      })
+      .then(() => window.location.href = "../account/index.html")
       .catch(err => alert(err.message));
   });
 }
@@ -28,11 +25,7 @@ if (registerForm) {
 
     createUserWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
-        setDoc(doc(db, "users", userCredential.user.uid), {
-          name,
-          email,
-          createdAt: new Date()
-        });
+        setDoc(doc(db, "users", userCredential.user.uid), { name, email, createdAt: new Date() });
         window.location.href = "../account/index.html";
       })
       .catch(err => alert(err.message));
