@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Orders — Makarios Emporium</title>
-<link rel="stylesheet" href="dashboard.css">
-<script type="module" src="../firebase.js"></script>
-<script type="module" src="account.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Orders — Makarios Emporium</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <script type="module" src="../firebase.js"></script>
+  <script type="module" src="dashboard.js"></script>
 </head>
 <body>
+
 <header class="navbar">
   <div class="logo">Makarios Emporium</div>
   <nav>
     <ul class="nav-menu">
-      <li><a href="../index.html">Home</a></li>
-      <li><a href="../shop/index.html">Shop</a></li>
       <li><a href="index.html">Dashboard</a></li>
-      <li><a href="../cart/index.html">Cart</a></li>
+      <li><a href="orders.html" class="active">My Orders</a></li>
+      <li><a href="settings.html">Profile</a></li>
       <li><button id="logoutBtn">Logout</button></li>
     </ul>
   </nav>
 </header>
 
 <section class="orders-section">
-  <h2>Your Orders</h2>
+  <h2>My Orders</h2>
   <table id="ordersTable">
     <thead>
       <tr>
@@ -34,8 +34,11 @@
         <th>Date</th>
       </tr>
     </thead>
-    <tbody></tbody>
+    <tbody>
+      <!-- Orders will load dynamically here -->
+    </tbody>
   </table>
 </section>
+
 </body>
 </html>
