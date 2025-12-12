@@ -1,95 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Makarios Emporium — Luxury Clothing</title>
-  <link rel="stylesheet" href="style.css">
-
-  <!-- GOOGLE FONTS -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Makarios Emporium — Luxury Clothing</title>
+<link rel="stylesheet" href="style.css">
+<script type="module" src="firebase.js"></script>
+<script type="module" src="script.js"></script>
 </head>
-
 <body>
-  <!-- TOP NAV -->
-  <header class="navbar">
-    <div class="logo">Makarios Emporium</div>
-    <nav>
-      <ul class="nav-menu">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="shop/index.html">Shop</a></li>
-        <li><a href="#">Collections</a></li>
-        <li><a href="auth/login.html">Login</a></li>
-        <li><a href="cart/index.html"><button class="cart-btn">Cart (0)</button></a></li>
-      </ul>
-    </nav>
-  </header>
+<header class="navbar">
+  <div class="logo">Makarios Emporium</div>
+  <nav>
+    <ul class="nav-menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="shop/index.html">Shop</a></li>
+      <li><a href="#">Collections</a></li>
+      <li><a href="auth/login.html">Login</a></li>
+      <li><a href="cart/index.html"><button class="cart-btn">Cart (0)</button></a></li>
+    </ul>
+  </nav>
+</header>
 
-  <!-- HERO SECTION -->
-  <section class="hero">
-    <div class="hero-overlay"></div>
-    <div class="hero-text">
-      <h1>Where Fashion Meets Royalty</h1>
-      <p>Premium clothing designed for bold, confident, and classy individuals.</p>
-      <a href="shop/index.html" class="hero-btn">Shop New Arrivals</a>
-    </div>
-  </section>
+<section class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-text">
+    <h1>Where Fashion Meets Royalty</h1>
+    <p>Premium clothing designed for bold, confident, and classy individuals.</p>
+    <a href="shop/index.html" class="hero-btn">Shop New Arrivals</a>
+  </div>
+</section>
 
-  <!-- FEATURED PRODUCTS -->
-  <section class="section-title">
-    <h2>Featured Products</h2>
-  </section>
+<section class="section-title"><h2>Featured Products</h2></section>
+<section class="products-grid" id="homeProducts"></section>
 
-  <section class="products-grid">
-    <!-- PRODUCT 1 -->
-    <div class="product-card">
-      <img src="https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg" alt="Fashion 1">
-      <h3>Classic Men's Jacket</h3>
-      <p class="price">₵399</p>
-      <button class="buy-btn"
-        data-id="1"
-        data-name="Classic Men's Jacket"
-        data-price="399"
-        data-img="https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg">
-        Add to Cart
-      </button>
-    </div>
+<footer class="footer">
+<p>© 2025 Makarios Emporium — Where Fashion Meets Royalty</p>
+</footer>
 
-    <!-- PRODUCT 2 -->
-    <div class="product-card">
-      <img src="https://images.pexels.com/photos/7679727/pexels-photo-7679727.jpeg" alt="Fashion 2">
-      <h3>Elegant Women's Dress</h3>
-      <p class="price">₵520</p>
-      <button class="buy-btn"
-        data-id="2"
-        data-name="Elegant Women's Dress"
-        data-price="520"
-        data-img="https://images.pexels.com/photos/7679727/pexels-photo-7679727.jpeg">
-        Add to Cart
-      </button>
-    </div>
+<script type="module">
+import { db, collection, getDocs } from "./firebase.js";
 
-    <!-- PRODUCT 3 -->
-    <div class="product-card">
-      <img src="https://images.pexels.com/photos/6311652/pexels-photo-6311652.jpeg" alt="Fashion 3">
-      <h3>Premium Unisex Hoodie</h3>
-      <p class="price">₵280</p>
-      <button class="buy-btn"
-        data-id="3"
-        data-name="Premium Unisex Hoodie"
-        data-price="280"
-        data-img="https://images.pexels.com/photos/6311652/pexels-photo-6311652.jpeg">
-        Add to Cart
-      </button>
-    </div>
-  </section>
+const homeGrid = document.getElementById("homeProducts");
+const productsRef = collection(db, "products");
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <p>© 2025 Makarios Emporium — Where Fashion Meets Royalty</p>
-  </footer>
-
-  <script src="script.js"></script>
+getDocs(productsRef).then(snapshot => {
+  snapshot.forEach(doc => {
+    const p = doc.data();
+    const div = document.createElement("div");
+    div.classList.add("product-card");
+    div.innerHTML = `
+      <img src="${p.imageUrl}" alt="${p.name}">
+      <h3>${p.name}</h3>
+      <p class="price">₵${p.price}</p>
+      <a href="shop/product.html?id=${doc.id}" class="buy-btn">View / Add to Cart</a>
+    `;
+    homeGrid.appendChild(div);
+  });
+});
+</script>
 </body>
 </html>
