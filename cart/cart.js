@@ -51,20 +51,21 @@ checkoutBtn.addEventListener("click", async () => {
   const user = auth.currentUser;
   if (!user) return alert("Please log in to place an order.");
 
-  // Calculate total
   const totalAmount = cart.reduce((a, b) => a + (b.price * b.qty || 0), 0);
 
-  // Paystack Checkout
+  if (typeof PaystackPop === "undefined") {
+    return alert("Paystack not loaded. Check your script import.");
+  }
+
   const handler = PaystackPop.setup({
     key: "YOUR_PUBLIC_KEY", // Replace with your Paystack public key
     email: user.email,
-    amount: totalAmount * 100, // amount in kobo
+    amount: totalAmount * 100, // kobo
     currency: "GHS",
     onClose: function() {
       alert("Payment cancelled.");
     },
     callback: async function(response) {
-      // Save order to Firestore
       await addDoc(collection(db, "orders"), {
         userId: user.uid,
         products: cart,
@@ -82,3 +83,4 @@ checkoutBtn.addEventListener("click", async () => {
 
   handler.openIframe();
 });
+
