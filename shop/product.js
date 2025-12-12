@@ -1,22 +1,42 @@
-const id = localStorage.getItem("selectedProduct");
-const product = PRODUCTS.find(p => p.id == id);
+// product.js
+import { db, doc, getDoc } from "../firebase.js";
 
-document.getElementById("productImage").src = product.image;
-document.getElementById("productName").textContent = product.name;
-document.getElementById("productPrice").textContent = "₵" + product.price;
-document.getElementById("productDesc").textContent = product.description;
+// Get product ID from URL
+const urlParams = new URLSearchParams(window.location.search);
+const productId = urlParams.get("id");
 
-document.getElementById("addToCartBtn").addEventListener("click", () => {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+const productDetail = document.getElementById("productDetail");
 
-  const item = cart.find(p => p.id == id);
+async function loadProduct() {
+  const docRef = doc(db, "products", productId);
+  const docSnap = await getDoc(docRef);
 
-  if (item) {
-    item.qty += 1;
-  } else {
-    cart.push({ ...product, qty: 1 });
+  if (!docSnap.exists()) {
+    productDetail.innerHTML = "<p>Product not found</p>";
+    return;
   }
 
-  localStorage.setItem("cart", JSON.stringify(cart));
-  alert("Item added to cart!");
-});
+  const p = docSnap.data();
+  productDetail.innerHTML = `
+    <img src="${p.imageUrl}" alt="${p.name}" class="product-image">
+    <div class="product-info">
+      <h2>${p.name}</h2>
+      <p class="price">₵${p.price}</p>
+      <p>${p.description || ""}</p>
+      <button id="addToCartBtn">Add to Cart</button>
+    </div>
+  `;
+
+  document.getElementById("addToCartBtn").addEventListener("click", () => {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const existing = cart.find(item => item.id === productId);
+
+    if (existing) existing.qty++;
+    else cart.push({ id: productId, name: p.name, price: p.price, qty: 1 });
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("Added to cart!");
+  });
+}
+
+loadProduct();
