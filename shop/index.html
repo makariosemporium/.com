@@ -1,37 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop — Makarios Emporium</title>
-  <link rel="stylesheet" href="../style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop — Makarios Emporium</title>
+<link rel="stylesheet" href="../style.css">
+<script type="module" src="../firebase.js"></script>
+<script type="module" src="shop.js"></script>
 </head>
-
 <body>
-  <header class="navbar">
-    <div class="logo">Makarios Emporium</div>
-    <nav>
-      <ul class="nav-menu">
-        <li><a href="../index.html">Home</a></li>
-        <li><a class="active">Shop</a></li>
-        <li><a href="../auth/login.html">Login</a></li>
-        <li><button class="cart-btn">Cart (0)</button></li>
-      </ul>
-    </nav>
-  </header>
+<header class="navbar">
+  <div class="logo">Makarios Emporium</div>
+  <nav>
+    <ul class="nav-menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="index.html" class="active">Shop</a></li>
+      <li><a href="../cart/index.html">Cart</a></li>
+      <li><a href="../account/index.html">Account</a></li>
+    </ul>
+  </nav>
+</header>
 
-  <section class="section-title">
-    <h2>All Products</h2>
-  </section>
+<section class="products-grid" id="productsGrid"></section>
 
-  <section class="products-grid" id="shopContainer">
-    <!-- JS loads products here -->
-  </section>
-
-  <footer class="footer">
-    <p>© 2025 Makarios Emporium — Luxury Clothing Brand</p>
-  </footer>
-
-  <script src="shop.js"></script>
 </body>
 </html>
