@@ -1,16 +1,16 @@
 // auth.js
-const loginForm = document.querySelector("#loginForm");
-const registerForm = document.querySelector("#registerForm");
+import { auth, db, createUserWithEmailAndPassword, signInWithEmailAndPassword, doc, setDoc } from "../firebase.js";
 
 // Login
+const loginForm = document.querySelector("#loginForm");
 if (loginForm) {
   loginForm.addEventListener("submit", e => {
     e.preventDefault();
     const email = loginForm.email.value;
     const password = loginForm.password.value;
 
-    auth.signInWithEmailAndPassword(email, password)
-      .then(user => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
         window.location.href = "../account/index.html";
       })
       .catch(err => alert(err.message));
@@ -18,6 +18,7 @@ if (loginForm) {
 }
 
 // Register
+const registerForm = document.querySelector("#registerForm");
 if (registerForm) {
   registerForm.addEventListener("submit", e => {
     e.preventDefault();
@@ -25,12 +26,12 @@ if (registerForm) {
     const email = registerForm.email.value;
     const password = registerForm.password.value;
 
-    auth.createUserWithEmailAndPassword(email, password)
+    createUserWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
-        db.collection("users").doc(userCredential.user.uid).set({
+        setDoc(doc(db, "users", userCredential.user.uid), {
           name,
           email,
-          createdAt: firebase.firestore.Timestamp.now()
+          createdAt: new Date()
         });
         window.location.href = "../account/index.html";
       })
