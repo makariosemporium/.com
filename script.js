@@ -46,3 +46,24 @@ document.querySelectorAll('.buy-btn').forEach(btn => {
         alert(`${product.name} added to cart!`);
     });
 });
+
+// ========== LOGIN STATUS NAV UPDATE ==========
+function checkLoginNavbar() {
+    const nav = document.querySelector(".nav-menu");
+    if (!nav) return;
+
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+    if (user) {
+        nav.innerHTML = `
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop/index.html">Shop</a></li>
+            <li><a href="#">Collections</a></li>
+            <li><a href="account/index.html">${user.name.split(" ")[0]}</a></li>
+            <li><button onclick="logoutUser()" class="cart-btn">Logout</button></li>
+        `;
+    }
+}
+
+checkLoginNavbar();
+
