@@ -1,4 +1,21 @@
 // admin.js
+import { auth, onAuthStateChanged } from "../firebase.js";
+
+const ADMIN_UID = "0lRoMun3CXTwhfUp5W0PmC0j7Cz2";
+
+onAuthStateChanged(auth, user => {
+  if (!user) {
+    window.location.href = "../auth/login.html";
+    return;
+  }
+  if (user.uid !== ADMIN_UID) {
+    alert("Access denied. Admins only.");
+    auth.signOut();
+    window.location.href = "../auth/login.html";
+  }
+});
+
+
 import { auth, db, onAuthStateChanged, collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "../firebase.js";
 
 // Logout
