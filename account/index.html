@@ -3,31 +3,88 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Account — Makarios Emporium</title>
-  <link rel="stylesheet" href="account.css">
-  <script defer src="../auth/auth.js"></script>
-  <script defer>
-    document.addEventListener("DOMContentLoaded", () => {
-      const user = getLoggedInUser();
-
-      if (!user) {
-        window.location.href = "../auth/login.html";
-        return;
-      }
-
-      document.getElementById("userName").textContent = user.name;
-      document.getElementById("userEmail").textContent = user.email;
-    });
-  </script>
+  <title>User Dashboard — Makarios Emporium</title>
+  <link rel="stylesheet" href="dashboard.css">
 </head>
 
 <body>
-  <div class="dashboard">
-    <h2>Welcome, <span id="userName">User</span></h2>
 
-    <p>Email: <span id="userEmail"></span></p>
+<div class="dashboard-container">
 
-    <button onclick="logoutUser()" class="logout-btn">Logout</button>
-  </div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h2 class="logo">Makarios</h2>
+
+    <nav>
+      <a href="index.html" class="active">🏠 Dashboard</a>
+      <a href="orders.html">🧾 My Orders</a>
+      <a href="settings.html">⚙ Settings</a>
+      <a href="../auth/login.html" class="logout">🚪 Logout</a>
+    </nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <div class="topbar">
+      <h1>Welcome Back 👋</h1>
+    </div>
+
+    <section class="overview-cards">
+      <div class="card">
+        <h3>Total Orders</h3>
+        <p>12</p>
+      </div>
+      <div class="card">
+        <h3>Pending Deliveries</h3>
+        <p>3</p>
+      </div>
+      <div class="card">
+        <h3>Completed Orders</h3>
+        <p>9</p>
+      </div>
+    </section>
+
+    <section class="recent-orders">
+      <h2>Recent Orders</h2>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>#ME2034</td>
+            <td>Dec 10, 2025</td>
+            <td><span class="status pending">Pending</span></td>
+            <td>₵180</td>
+          </tr>
+
+          <tr>
+            <td>#ME1982</td>
+            <td>Dec 5, 2025</td>
+            <td><span class="status completed">Completed</span></td>
+            <td>₵220</td>
+          </tr>
+
+          <tr>
+            <td>#ME1932</td>
+            <td>Dec 1, 2025</td>
+            <td><span class="status completed">Completed</span></td>
+            <td>₵150</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </section>
+
+  </main>
+</div>
+
 </body>
 </html>
