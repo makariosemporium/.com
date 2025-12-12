@@ -1,44 +1,66 @@
+// cart.js
+import { getAllProducts } from "../shop/products.js";
+import { auth, db, collection, addDoc, onAuthStateChanged } from "../firebase.js";
+
+const cartTable = document.querySelector("#cartTable tbody");
+const cartTotalEl = document.getElementById("cartTotal");
+const checkoutBtn = document.getElementById("checkoutBtn");
+
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
-const cartContainer = document.getElementById("cartContainer");
 
-if (cart.length === 0) {
-  cartContainer.innerHTML = "<h3>Your cart is empty.</h3>";
-} else {
-  let html = "";
+async function renderCart() {
+  cartTable.innerHTML = "";
+  let total = 0;
 
-  cart.forEach((item, index) => {
-    html += `
-      <div style="
-        display:flex;
-        justify-content:space-between;
-        background:white;
-        padding:20px;
-        margin-bottom:15px;
-        border-radius:8px;
-        box-shadow:0 2px 10px rgba(0,0,0,0.1)
-      ">
-        <div>
-          <h3>${item.name}</h3>
-          <p>₵${item.price}</p>
-          <p>Quantity: ${item.qty}</p>
-        </div>
+  // Fetch all product data once
+  const products = await getAllProducts();
 
-        <button onclick="removeItem(${index})" style="
-          background:#111;
-          color:white;
-          border:none;
-          padding:10px 15px;
-          border-radius:5px;
-        ">Remove</button>
-      </div>
+  cart.forEach((item, i) => {
+    const productData = products.find(p => p.id === item.id) || {};
+    const itemTotal = (productData.price || item.price) * item.qty;
+    total += itemTotal;
+
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td>${item.name}</td>
+      <td>₵${productData.price || item.price}</td>
+      <td>${item.qty}</td>
+      <td>₵${itemTotal}</td>
+      <td><button class="removeBtn" data-index="${i}">X</button></td>
     `;
+    cartTable.appendChild(row);
   });
 
-  cartContainer.innerHTML = html;
+  cartTotalEl.textContent = `Total: ₵${total}`;
+  localStorage.setItem("cart", JSON.stringify(cart));
+
+  document.querySelectorAll(".removeBtn").forEach(btn =>
+    btn.addEventListener("click", e => {
+      cart.splice(e.target.dataset.index, 1);
+      renderCart();
+    })
+  );
 }
 
-function removeItem(index) {
-  cart.splice(index, 1);
-  localStorage.setItem("cart", JSON.stringify(cart));
-  location.reload();
-}
+renderCart();
+
+checkoutBtn.addEventListener("click", () => {
+  if (cart.length === 0) return alert("Cart is empty!");
+
+  onAuthStateChanged(auth, user => {
+    if (!user) return alert("Please log in to place an order.");
+
+    const ordersRef = collection(db, "orders");
+    addDoc(ordersRef, {
+      userId: user.uid,
+      products: cart,
+      total: cart.reduce((a, b) => a + (b.price * b.qty), 0),
+      status: "Pending",
+      date: new Date()
+    }).then(() => {
+      alert("Order placed successfully!");
+      cart = [];
+      renderCart();
+    });
+  });
+});
