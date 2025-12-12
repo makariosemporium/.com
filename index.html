@@ -4,20 +4,61 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Makarios Emporium — Luxury Clothing</title>
-<link rel="stylesheet" href="style.css">
+<style>
+  /* Reset & base */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; line-height: 1.5; background: #fff; color: #111; }
+
+  /* Navbar */
+  .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100; }
+  .logo { font-weight: 700; font-size: 1.5rem; }
+  .nav-menu { display: flex; gap: 1rem; list-style: none; align-items: center; }
+  .nav-menu li a, .nav-menu li button { text-decoration: none; color: #111; font-weight: 600; padding: 0.5rem 1rem; }
+  .cart-btn { background: #e53935; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+
+  /* Hero */
+  .hero { position: relative; display: flex; justify-content: center; align-items: center; text-align: center; padding: 4rem 1rem; background: url('https://images.unsplash.com/photo-1585238342025-68c9aa5b0b32?auto=format&fit=crop&w=1400&q=80') no-repeat center/cover; color: #fff; }
+  .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+  .hero-text { position: relative; max-width: 600px; }
+  .hero-text h1 { font-size: 2rem; margin-bottom: 1rem; }
+  .hero-text p { font-size: 1rem; margin-bottom: 1.5rem; }
+  .hero-btn { background: #e53935; color: #fff; padding: 0.8rem 1.5rem; text-decoration: none; border-radius: 8px; font-weight: 600; }
+
+  /* Section titles */
+  .section-title { padding: 2rem 1rem; text-align: center; font-size: 1.5rem; font-weight: 700; }
+
+  /* Products grid */
+  .products-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(180px,1fr)); gap: 1rem; padding: 1rem; }
+  .product-card { border: 1px solid #eee; border-radius: 10px; padding: 1rem; text-align: center; display: flex; flex-direction: column; gap: 0.5rem; background: #fff; }
+  .product-card img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; }
+  .product-card h3 { font-size: 1rem; font-weight: 700; }
+  .price { font-weight: 700; color: #e53935; }
+  .buy-btn { margin-top: auto; background: #e53935; color: #fff; padding: 0.5rem; text-decoration: none; border-radius: 6px; display: inline-block; font-weight: 600; }
+
+  /* Footer */
+  .footer { text-align: center; padding: 2rem 1rem; font-size: 0.9rem; color: #666; border-top: 1px solid #eee; }
+
+  /* Mobile */
+  @media(max-width:768px){
+    .nav-menu { flex-direction: column; gap: 0.5rem; }
+    .hero-text h1 { font-size: 1.5rem; }
+    .hero-text p { font-size: 0.9rem; }
+  }
+</style>
 <script type="module" src="firebase.js"></script>
-<script type="module" src="script.js"></script>
 </head>
 <body>
 <header class="navbar">
   <div class="logo">Makarios Emporium</div>
   <nav>
-    <ul class="nav-menu">
+    <ul class="nav-menu" id="navMenu">
       <li><a href="index.html">Home</a></li>
       <li><a href="shop/index.html">Shop</a></li>
       <li><a href="#">Collections</a></li>
-      <li><a href="auth/login.html">Login</a></li>
-      <li><a href="cart/index.html"><button class="cart-btn">Cart (0)</button></a></li>
+      <li><a href="auth/login.html" id="loginLink">Login</a></li>
+      <li><a href="#" id="adminLink" style="display:none">Admin</a></li>
+      <li><a href="#" id="logoutLink" style="display:none">Logout</a></li>
+      <li><a href="cart/index.html"><button class="cart-btn" id="cartBtn">Cart (0)</button></a></li>
     </ul>
   </nav>
 </header>
@@ -35,13 +76,14 @@
 <section class="products-grid" id="homeProducts"></section>
 
 <footer class="footer">
-  <p>Contact us: makariosemporium@gmail.com</p><br>
-<p>© 2025 Makarios Emporium — Where Fashion Meets Royalty</p>
+  <p>Contact us: makariosemporium@gmail.com</p>
+  <p>© 2025 Makarios Emporium — Where Fashion Meets Royalty</p>
 </footer>
 
 <script type="module">
 import { db, collection, getDocs } from "./firebase.js";
 
+// Populate featured products
 const homeGrid = document.getElementById("homeProducts");
 const productsRef = collection(db, "products");
 
@@ -58,6 +100,26 @@ getDocs(productsRef).then(snapshot => {
     `;
     homeGrid.appendChild(div);
   });
+});
+
+// Dynamic admin/logout links
+const loginLink = document.getElementById("loginLink");
+const adminLink = document.getElementById("adminLink");
+const logoutLink = document.getElementById("logoutLink");
+
+// Example: store role in localStorage on login
+const role = localStorage.getItem("role"); // e.g., 'admin' or 'client'
+if(role === "admin"){
+  adminLink.style.display = "inline-block";
+  logoutLink.style.display = "inline-block";
+  loginLink.style.display = "none";
+}
+
+// Logout
+logoutLink.addEventListener("click", () => {
+  localStorage.removeItem("role");
+  localStorage.removeItem("token");
+  window.location.href = "index.html";
 });
 </script>
 </body>
