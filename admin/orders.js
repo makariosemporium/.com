@@ -1,68 +1,49 @@
-// TEMPORARY LOCAL STORAGE ORDERS
-let orders = JSON.parse(localStorage.getItem("orders")) || [
-  {
-    id: 1,
-    customer: "Emmanuel Kwame",
-    email: "emmanuel@example.com",
-    items: "Classic Men's Jacket x1, Hoodie x2",
-    total: 959,
-    status: "Pending"
-  },
-  {
-    id: 2,
-    customer: "Abena Mensah",
-    email: "abena@example.com",
-    items: "Elegant Women's Dress x1",
-    total: 520,
-    status: "Shipped"
-  }
-];
+// orders.js
+import { db, collection, getDocs, updateDoc, doc } from "../firebase.js";
 
-function renderOrders() {
-  const table = document.getElementById("ordersTable");
-  table.innerHTML = "";
+const ordersTableBody = document.querySelector("#ordersTable tbody");
 
-  orders.forEach(order => {
-    const row = document.createElement("tr");
+async function loadOrders() {
+  const snapshot = await getDocs(collection(db, "orders"));
+  ordersTableBody.innerHTML = '';
 
-    row.innerHTML = `
-      <td>${order.id}</td>
-      <td>${order.customer}</td>
-      <td>${order.email}</td>
-      <td>${order.items}</td>
-      <td>${order.total}</td>
-      <td>
-        <button class="status-btn status-${order.status.toLowerCase()}" onclick="changeStatus(${order.id})">
-          ${order.status}
-        </button>
+  snapshot.forEach(docSnap => {
+    const o = docSnap.data();
+    const tr = document.createElement("tr");
+
+    tr.innerHTML = `
+      <td data-label="Order ID">${docSnap.id}</td>
+      <td data-label="Customer">${o.customerName}</td>
+      <td data-label="Items">${o.items.map(i => i.name).join(", ")}</td>
+      <td data-label="Quantity">${o.items.map(i => i.qty).join(", ")}</td>
+      <td data-label="Total">₵${o.items.reduce((sum, i) => sum + i.price * i.qty, 0).toFixed(2)}</td>
+      <td data-label="Status">
+        <select class="status-select" data-id="${docSnap.id}">
+          <option value="pending" ${o.status === "pending" ? "selected" : ""}>Pending</option>
+          <option value="processing" ${o.status === "processing" ? "selected" : ""}>Processing</option>
+          <option value="delivered" ${o.status === "delivered" ? "selected" : ""}>Delivered</option>
+        </select>
       </td>
-      <td>
-        <button class="action-btn" onclick="deleteOrder(${order.id})">Delete</button>
+      <td data-label="Action">
+        <button class="btn update-btn" data-id="${docSnap.id}">Update</button>
       </td>
     `;
 
-    table.appendChild(row);
+    ordersTableBody.appendChild(tr);
   });
 
-  localStorage.setItem("orders", JSON.stringify(orders));
+  // Attach update button events
+  document.querySelectorAll(".update-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.getAttribute("data-id");
+      const select = document.querySelector(`.status-select[data-id="${id}"]`);
+      const newStatus = select.value;
+      await updateDoc(doc(db, "orders", id), { status: newStatus });
+      alert("Order status updated!");
+      loadOrders();
+    });
+  });
 }
 
-// CHANGE STATUS FUNCTION
-function changeStatus(id) {
-  const order = orders.find(o => o.id === id);
-
-  if(order.status === "Pending") order.status = "Shipped";
-  else if(order.status === "Shipped") order.status = "Delivered";
-  else if(order.status === "Delivered") order.status = "Pending";
-
-  renderOrders();
-}
-
-// DELETE ORDER FUNCTION
-function deleteOrder(id) {
-  orders = orders.filter(o => o.id !== id);
-  renderOrders();
-}
-
-// INITIAL RENDER
-renderOrders();
+// Initial load
+loadOrders();
