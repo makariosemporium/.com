@@ -1,92 +1,39 @@
-console.log("Auth system loaded");
+// auth.js
+const loginForm = document.querySelector("#loginForm");
+const registerForm = document.querySelector("#registerForm");
 
-// Load users list
-function getUsers() {
-    return JSON.parse(localStorage.getItem("users")) || [];
-}
-
-// Save users list
-function saveUsers(users) {
-    localStorage.setItem("users", JSON.stringify(users));
-}
-
-// Save logged in user
-function loginUser(user) {
-    localStorage.setItem("loggedInUser", JSON.stringify(user));
-}
-
-// Logout user
-function logoutUser() {
-    localStorage.removeItem("loggedInUser");
-    window.location.href = "../auth/login.html";
-}
-
-// Check login status
-function getLoggedInUser() {
-    return JSON.parse(localStorage.getItem("loggedInUser"));
-}
-
-
-// ========================
-// HANDLE REGISTRATION
-// ========================
-const registerForm = document.getElementById("registerForm");
-
-if (registerForm) {
-    registerForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-
-        const name = document.getElementById("regName").value;
-        const email = document.getElementById("regEmail").value.toLowerCase();
-        const password = document.getElementById("regPassword").value;
-
-        let users = getUsers();
-
-        // Check if email already exists
-        if (users.find(u => u.email === email)) {
-            alert("Email already registered.");
-            return;
-        }
-
-        const newUser = {
-            id: Date.now(),
-            name,
-            email,
-            password
-        };
-
-        users.push(newUser);
-        saveUsers(users);
-
-        alert("Account created successfully!");
-        window.location.href = "login.html";
-    });
-}
-
-
-// ========================
-// HANDLE LOGIN
-// ========================
-const loginForm = document.getElementById("loginForm");
-
+// Login
 if (loginForm) {
-    loginForm.addEventListener("submit", (e) => {
-        e.preventDefault();
+  loginForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const email = loginForm.email.value;
+    const password = loginForm.password.value;
 
-        const email = document.getElementById("loginEmail").value.toLowerCase();
-        const password = document.getElementById("loginPassword").value;
-
-        let users = getUsers();
-
-        const user = users.find(u => u.email === email && u.password === password);
-
-        if (!user) {
-            alert("Invalid email or password");
-            return;
-        }
-
-        loginUser(user);
+    auth.signInWithEmailAndPassword(email, password)
+      .then(user => {
         window.location.href = "../account/index.html";
-    });
+      })
+      .catch(err => alert(err.message));
+  });
 }
 
+// Register
+if (registerForm) {
+  registerForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const name = registerForm.name.value;
+    const email = registerForm.email.value;
+    const password = registerForm.password.value;
+
+    auth.createUserWithEmailAndPassword(email, password)
+      .then(userCredential => {
+        db.collection("users").doc(userCredential.user.uid).set({
+          name,
+          email,
+          createdAt: firebase.firestore.Timestamp.now()
+        });
+        window.location.href = "../account/index.html";
+      })
+      .catch(err => alert(err.message));
+  });
+}
