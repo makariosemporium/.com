@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Account — Makarios Emporium</title>
+  <link rel="stylesheet" href="account.css">
+  <script defer src="../auth/auth.js"></script>
+  <script defer>
+    document.addEventListener("DOMContentLoaded", () => {
+      const user = getLoggedInUser();
+
+      if (!user) {
+        window.location.href = "../auth/login.html";
+        return;
+      }
+
+      document.getElementById("userName").textContent = user.name;
+      document.getElementById("userEmail").textContent = user.email;
+    });
+  </script>
+</head>
+
+<body>
+  <div class="dashboard">
+    <h2>Welcome, <span id="userName">User</span></h2>
+
+    <p>Email: <span id="userEmail"></span></p>
+
+    <button onclick="logoutUser()" class="logout-btn">Logout</button>
+  </div>
+</body>
+</html>
