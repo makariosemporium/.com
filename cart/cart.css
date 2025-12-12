@@ -1,0 +1,100 @@
+/* ===== Cart Section ===== */
+.cart-section {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.cart-section h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #333;
+  text-align: center;
+}
+
+/* ===== Cart Table ===== */
+#cartTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+#cartTable th, #cartTable td {
+  padding: 12px 15px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+#cartTable th {
+  background-color: #f4f4f4;
+  color: #555;
+  font-weight: 600;
+}
+
+#cartTable tr:hover {
+  background-color: #f9f9f9;
+}
+
+#cartTable img {
+  width: 60px;
+  height: auto;
+  border-radius: 6px;
+}
+
+/* ===== Total & Checkout Button ===== */
+#cartTotal {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: right;
+  margin-bottom: 1rem;
+  color: #222;
+}
+
+#checkoutBtn {
+  display: block;
+  margin: 0 auto;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #0a74da;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+#checkoutBtn:hover {
+  background-color: #085cb1;
+}
+
+/* ===== Remove Button ===== */
+.removeBtn {
+  background-color: #e74c3c;
+  color: #fff;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.removeBtn:hover {
+  background-color: #c0392b;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  #cartTable th, #cartTable td {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+
+  #checkoutBtn {
+    width: 100%;
+    padding: 0.75rem;
+  }
+}
