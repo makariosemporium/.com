@@ -1,6 +1,8 @@
 // adminAuth.js
 import { auth, db, onAuthStateChanged, doc, getDoc } from "../firebase.js";
 
+const ADMIN_UID = "0lRoMun3CXTwhfUp5W0PmC0j7Cz2"; // Your admin UID
+
 onAuthStateChanged(auth, async user => {
   if (!user) {
     // Not logged in → redirect
@@ -8,9 +10,8 @@ onAuthStateChanged(auth, async user => {
     return;
   }
 
-  // Check if user is admin
-  const adminDoc = await getDoc(doc(db, "admins", user.uid));
-  if (!adminDoc.exists()) {
+  // Check if the logged-in user's UID matches the admin UID
+  if (user.uid !== ADMIN_UID) {
     alert("Access denied. Admins only.");
     auth.signOut();
     window.location.href = "../auth/login.html";
