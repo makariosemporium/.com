@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings — Makarios Emporium</title>
+<link rel="stylesheet" href="dashboard.css">
+<script type="module" src="../firebase.js"></script>
+<script type="module" src="account.js"></script>
+</head>
+<body>
+<header class="navbar">
+  <div class="logo">Makarios Emporium</div>
+  <nav>
+    <ul class="nav-menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../shop/index.html">Shop</a></li>
+      <li><a href="index.html">Dashboard</a></li>
+      <li><a href="../cart/index.html">Cart</a></li>
+      <li><button id="logoutBtn">Logout</button></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="settings-section">
+  <h2>Edit Profile</h2>
+  <form id="settingsForm">
+    <label>Name</label>
+    <input type="text" id="userNameInput" required>
+    <label>Email</label>
+    <input type="email" id="userEmailInput" disabled>
+    <button type="submit" class="btn">Save Changes</button>
+  </form>
+</section>
+</body>
+</html>
