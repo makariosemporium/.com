@@ -1,49 +1,71 @@
-let products = [];
+// products.js
+import { db, collection, getDocs, addDoc, deleteDoc, doc, updateDoc } from "../firebase.js";
 
-document.getElementById("productForm").addEventListener("submit", function(e) {
-  e.preventDefault();
+const productsTableBody = document.querySelector("#productsTable tbody");
+const addProductForm = document.getElementById("addProductForm");
 
-  let name = document.getElementById("productName").value;
-  let price = document.getElementById("productPrice").value;
-  let category = document.getElementById("productCategory").value;
-  let image = document.getElementById("productImage").files[0];
+async function loadProducts() {
+  const snapshot = await getDocs(collection(db, "products"));
+  productsTableBody.innerHTML = '';
 
-  let imageURL = image ? URL.createObjectURL(image) : "";
+  snapshot.forEach(docSnap => {
+    const p = docSnap.data();
+    const tr = document.createElement("tr");
 
-  let product = {
-    id: Date.now(),
-    name,
-    price,
-    category,
-    imageURL
-  };
-
-  products.push(product);
-  updateTable();
-
-  // Reset form
-  this.reset();
-});
-
-function updateTable() {
-  let table = document.getElementById("productsTable");
-  table.innerHTML = "";
-
-  products.forEach(product => {
-    let row = `
-      <tr>
-        <td><img src="${product.imageURL}" class="product-img"></td>
-        <td>${product.name}</td>
-        <td>${product.category}</td>
-        <td>GHS ${product.price}</td>
-        <td><button class="action-btn" onclick="deleteProduct(${product.id})">Delete</button></td>
-      </tr>
+    tr.innerHTML = `
+      <td data-label="Name">${p.name}</td>
+      <td data-label="Price">₵${p.price}</td>
+      <td data-label="Image URL">${p.imageUrl}</td>
+      <td data-label="Actions">
+        <button class="btn edit-btn" data-id="${docSnap.id}">Edit</button>
+        <button class="btn delete-btn" data-id="${docSnap.id}">Delete</button>
+      </td>
     `;
-    table.innerHTML += row;
+
+    productsTableBody.appendChild(tr);
+  });
+
+  // Delete product
+  document.querySelectorAll(".delete-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.getAttribute("data-id");
+      if (confirm("Delete this product?")) {
+        await deleteDoc(doc(db, "products", id));
+        loadProducts();
+      }
+    });
+  });
+
+  // Edit product
+  document.querySelectorAll(".edit-btn").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const id = btn.getAttribute("data-id");
+      const p = await getDoc(doc(db, "products", id));
+      const data = p.data();
+      const name = prompt("Edit Name", data.name);
+      const price = prompt("Edit Price", data.price);
+      const imageUrl = prompt("Edit Image URL", data.imageUrl);
+      if (name && price && imageUrl) {
+        await updateDoc(doc(db, "products", id), { name, price: parseFloat(price), imageUrl });
+        loadProducts();
+      }
+    });
   });
 }
 
-function deleteProduct(id) {
-  products = products.filter(p => p.id !== id);
-  updateTable();
-}
+// Add new product
+addProductForm.addEventListener("submit", async e => {
+  e.preventDefault();
+  const name = addProductForm.name.value;
+  const price = parseFloat(addProductForm.price.value);
+  const imageUrl = addProductForm.imageUrl.value;
+
+  if (!name || !price || !imageUrl) return alert("All fields are required.");
+
+  await addDoc(collection(db, "products"), { name, price, imageUrl });
+  addProductForm.reset();
+  loadProducts();
+});
+
+// Initial load
+loadProducts();
