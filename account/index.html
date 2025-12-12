@@ -3,99 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>User Dashboard — Makarios Emporium</title>
+<title>Dashboard — Makarios Emporium</title>
 <link rel="stylesheet" href="dashboard.css">
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-<script src="../auth/auth.js"></script>
-<script src="../firebase.js"></script>
+<script type="module" src="../firebase.js"></script>
+<script type="module" src="account.js"></script>
 </head>
 <body>
-<div class="dashboard-container">
+<header class="navbar">
+  <div class="logo">Makarios Emporium</div>
+  <nav>
+    <ul class="nav-menu">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../shop/index.html">Shop</a></li>
+      <li><a href="index.html" class="active">Dashboard</a></li>
+      <li><a href="../cart/index.html">Cart</a></li>
+      <li><button id="logoutBtn">Logout</button></li>
+    </ul>
+  </nav>
+</header>
 
-  <aside class="sidebar">
-    <h2 class="logo">Makarios</h2>
-    <nav>
-      <a href="index.html" class="active">🏠 Dashboard</a>
-      <a href="orders.html">🧾 My Orders</a>
-      <a href="settings.html">⚙ Settings</a>
-      <a href="../auth/login.html" class="logout">🚪 Logout</a>
-    </nav>
-  </aside>
-
-  <main class="main">
-    <div class="topbar">
-      <h1>Welcome Back 👋</h1>
+<section class="dashboard-summary">
+  <h2>Welcome, <span id="userName"></span>!</h2>
+  <div class="summary-cards">
+    <div class="card">
+      <h3>Total Orders</h3>
+      <p id="totalOrders">0</p>
     </div>
+    <div class="card">
+      <h3>Pending Orders</h3>
+      <p id="pendingOrders">0</p>
+    </div>
+    <div class="card">
+      <h3>Completed Orders</h3>
+      <p id="completedOrders">0</p>
+    </div>
+  </div>
+  <a href="orders.html" class="btn">View Order History</a>
+  <a href="settings.html" class="btn">Edit Profile</a>
+</section>
 
-    <section class="overview-cards">
-      <div class="card">
-        <h3>Total Orders</h3>
-        <p id="totalOrders">0</p>
-      </div>
-      <div class="card">
-        <h3>Pending Deliveries</h3>
-        <p id="pendingOrders">0</p>
-      </div>
-      <div class="card">
-        <h3>Completed Orders</h3>
-        <p id="completedOrders">0</p>
-      </div>
-    </section>
-
-    <section class="recent-orders">
-      <h2>Recent Orders</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Order ID</th>
-            <th>Date</th>
-            <th>Status</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody id="recentOrdersTable"></tbody>
-      </table>
-    </section>
-  </main>
-</div>
-
-<script>
-auth.onAuthStateChanged(user => {
-  if (!user) {
-    window.location.href = "../auth/login.html";
-    return;
-  }
-
-  const ordersRef = db.collection("orders").where("userId", "==", user.uid);
-
-  ordersRef.get().then(snapshot => {
-    const totalOrders = snapshot.size;
-    let pending = 0, completed = 0;
-    const table = document.getElementById("recentOrdersTable");
-    table.innerHTML = "";
-
-    snapshot.forEach(doc => {
-      const order = doc.data();
-      if (order.status === "Pending") pending++;
-      if (order.status === "Completed") completed++;
-
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${doc.id}</td>
-        <td>${order.date.toDate().toLocaleDateString()}</td>
-        <td>${order.status}</td>
-        <td>₵${order.total}</td>
-      `;
-      table.appendChild(tr);
-    });
-
-    document.getElementById("totalOrders").textContent = totalOrders;
-    document.getElementById("pendingOrders").textContent = pending;
-    document.getElementById("completedOrders").textContent = completed;
-  });
-});
-</script>
 </body>
 </html>
