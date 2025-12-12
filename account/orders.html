@@ -1,0 +1,39 @@
+<!-- orders.html -->
+<table>
+  <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>Date</th>
+      <th>Status</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody id="ordersTable"></tbody>
+</table>
+
+<script>
+auth.onAuthStateChanged(user => {
+  if (!user) {
+    window.location.href = "../auth/login.html";
+    return;
+  }
+
+  const ordersRef = db.collection("orders").where("userId", "==", user.uid);
+
+  ordersRef.get().then(snapshot => {
+    const table = document.getElementById("ordersTable");
+    table.innerHTML = "";
+    snapshot.forEach(doc => {
+      const order = doc.data();
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${doc.id}</td>
+        <td>${order.date.toDate().toLocaleDateString()}</td>
+        <td>${order.status}</td>
+        <td>₵${order.total}</td>
+      `;
+      table.appendChild(tr);
+    });
+  });
+});
+</script>
